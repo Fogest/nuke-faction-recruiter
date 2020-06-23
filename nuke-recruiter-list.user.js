@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Nuklear Applicant
 // @namespace    com.jhvisser.nuke
-// @version      1.0.3
+// @version      1.0.4
 // @description  To flag those who have had recruitment messages sent
 // @author       Altered By Fogest, Originally by Jox [1714547]
 // @match        https://www.torn.com/profiles.php*
@@ -232,8 +232,12 @@
                 headers:    {"Content-Type": "application/x-www-form-urlencoded"},
                 data:       postData,
                 onload:     function (response) {
-                    alert(response.responseText);
-                    updateBlackList();
+                    if (response.status === 200) {
+                        document.getElementById('recruit-list-box').remove();
+                        updateBlackList();
+                    } else {
+                        alert(response.responseText);
+                    }
                 }
             });
         }

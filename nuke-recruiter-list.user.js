@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Nuklear Applicant
 // @namespace    com.jhvisser.nuke
-// @version      1.0.2
+// @version      1.0.3
 // @description  To flag those who have had recruitment messages sent
 // @author       Altered By Fogest, Originally by Jox [1714547]
 // @match        https://www.torn.com/profiles.php*
@@ -17,7 +17,7 @@
 (function() {
     'use strict';
 
-    var apiUrl = 'http://torn-faction-companies/api';
+    var apiUrl = 'https://nuke.jhvisser.com/api';
 
     var uid = null;
     var fid = null;

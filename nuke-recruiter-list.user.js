@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Nuklear Applicant
 // @namespace    com.jhvisser.nuke
-// @version      1.0.4
+// @version      1.0.5
 // @description  To flag those who have had recruitment messages sent
 // @author       Altered By Fogest, Originally by Jox [1714547]
 // @match        https://www.torn.com/profiles.php*
@@ -30,9 +30,11 @@
     var factionName = null;
     var update = 1;
 
+    var factionWhiteList = [8085, 8954, 9745, 12863, 13851, 17133, 21028];
+
     var blPrfileColor = '#00a1ff3b';
     var blFactionColor = 'rgba(150,70,120,0.5)';
-    var wlFactionColor = 'rgba(0,100,0,0.3)';
+    var wlFactionColor = '#422bff21';
 
     console.log('Nuclear Applicant Loaded');
 
@@ -138,6 +140,9 @@
             fid = facLink ? facLink.href.replace('https://www.torn.com/factions.php?step=profile&ID=', '') : false;
             factionName = facLink ? facLink.text : false;
 
+            let fidInt = false;
+            if(fid) fidInt = parseInt(fid);
+
             if (id) {
                 TargetID = id;
             };
@@ -160,7 +165,14 @@
 
             var userInformationContainer = document.querySelector('.user-information .cont');
 
-            if(blackList[id]){
+
+            console.log(factionWhiteList);
+            console.log(fid);
+            console.log(fidInt);
+            console.log(factionWhiteList.includes(fidInt));
+
+
+            if(blackList[id] || factionWhiteList.includes(fidInt)){
                 var ul = document.createElement('ul');
                 ul.style.padding = '3px 10px';
                 ul.style.margin = '0 5px';
@@ -170,6 +182,15 @@
 
                     let li = document.createElement('li');
                     li.innerHTML = 'Recruited by: <span class="bold">' + blackList[id].recruited_by + ': </span> at ' + blackList[id].updated_at;
+
+                    ul.appendChild(li);
+                }
+
+                if(fidInt && factionWhiteList.includes(fidInt)){
+                    userInformationContainer.style.backgroundColor = wlFactionColor;
+
+                    let li = document.createElement('li');
+                    li.innerHTML = '<span class="bold">In our faction :)</span>'
 
                     ul.appendChild(li);
                 }
@@ -252,13 +273,21 @@
             if(list.childNodes[i].childNodes.length > 0){
                 //console.log(list.childNodes[i]);
                 var id = list.childNodes[i].querySelector('a.user.name').href.replace('https://www.torn.com/profiles.php?XID=', '');
-                var fid = list.childNodes[i].querySelector('a.user.faction').href.replace('https://www.torn.com/factions.php?step=profile&ID=', '');
+
+                var facLink = list.childNodes[i].querySelector("a.user.faction")
+                fid = facLink ? facLink.href.replace('https://www.torn.com/factions.php?step=profile&ID=', '') : false;
+                let fidInt = fid ? parseInt(fid) : false;
 
                 console.log(id, fid);
 
                 if(blackList[id]){
                     list.childNodes[i].style.backgroundColor = blPrfileColor;
                     list.childNodes[i].classList.add('nuke-blacklist');
+                }
+
+                if (factionWhiteList.includes(fidInt)) {
+                    list.childNodes[i].style.backgroundColor = wlFactionColor;
+                    list.childNodes[i].classList.add('nuke-faction-whitelist');
                 }
             }
         }
@@ -271,9 +300,17 @@
                 //console.log(list.childNodes[i]);
                 var id = list.childNodes[i].querySelector('a.user.name').href.replace('https://www.torn.com/profiles.php?XID=', '');
 
+                var facLink = list.childNodes[i].querySelector("a[href^='/factions.php']")
+                fid = facLink ? facLink.href.replace('https://www.torn.com/factions.php?step=profile&ID=', '') : false;
+                let fidInt = fid ? parseInt(fid) : false;
+
                 if(blackList[id]){
                     list.childNodes[i].style.backgroundColor = blPrfileColor;
                     list.childNodes[i].classList.add('nuke-blacklist');
+                }
+                if (factionWhiteList.includes(fidInt)) {
+                    list.childNodes[i].style.backgroundColor = wlFactionColor;
+                    list.childNodes[i].classList.add('nuke-faction-whitelist');
                 }
             }
         }
@@ -285,13 +322,20 @@
             if(list.childNodes[i].childNodes.length > 0){
                 //console.log(list.childNodes[i]);
                 var id = list.childNodes[i].querySelector('a.user.name').href.replace('https://www.torn.com/profiles.php?XID=', '');
-                var fid = list.childNodes[i].querySelector('a.user.faction').href.replace('https://www.torn.com/factions.php?step=profile&ID=', '');
+
+                var facLink = list.childNodes[i].querySelector("a[href^='/factions.php']")
+                fid = facLink ? facLink.href.replace('https://www.torn.com/factions.php?step=profile&ID=', '') : false;
+                let fidInt = fid ? parseInt(fid) : false;
 
                 if(blackList[id]){
                     list.childNodes[i].style.backgroundColor = blPrfileColor;
                     list.childNodes[i].classList.add('nuke-blacklist');
                 }
 
+                if (factionWhiteList.includes(fidInt)) {
+                    list.childNodes[i].style.backgroundColor = wlFactionColor;
+                    list.childNodes[i].classList.add('nuke-faction-whitelist');
+                }
             }
         }
     }

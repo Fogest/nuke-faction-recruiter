@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Nuklear Applicant
 // @namespace    com.jhvisser.nuke
-// @version      1.0.1
+// @version      1.0.2
 // @description  To flag those who have had recruitment messages sent
 // @author       Altered By Fogest, Originally by Jox [1714547]
 // @match        https://www.torn.com/profiles.php*
@@ -34,7 +34,7 @@
     var blFactionColor = 'rgba(150,70,120,0.5)';
     var wlFactionColor = 'rgba(0,100,0,0.3)';
 
-    console.log('hi there');
+    console.log('Nuclear Applicant Loaded');
 
     start();
 
@@ -43,7 +43,6 @@
         try{
             savedData = JSON.parse(localStorage.localRecruitlist || '{"blackList" : {}, "timestamp" : 0}');
             blackList = savedData;
-            console.log(savedData);
         }
         catch(error){
             console.error(error);
@@ -67,6 +66,10 @@
         }
 
         if(window.location.href.startsWith('https://www.torn.com/hospitalview.php')){
+            watchForHospitalListUpdates();
+        }
+
+        if(window.location.href.startsWith('https://www.torn.com/page.php')) {
             watchForPlayerListUpdates();
         }
 
@@ -257,6 +260,21 @@
         }
     }
 
+    function applyProfileListFilter(){
+        let list = document.querySelector('.user-info-list-wrap');
+        for(var i=0; i < list.childNodes.length; i++){
+            if(list.childNodes[i].childNodes.length > 0){
+                //console.log(list.childNodes[i]);
+                var id = list.childNodes[i].querySelector('a.user.name').href.replace('https://www.torn.com/profiles.php?XID=', '');
+
+                if(blackList[id]){
+                    list.childNodes[i].style.backgroundColor = blPrfileColor;
+                    list.childNodes[i].classList.add('nuke-blacklist');
+                }
+            }
+        }
+    }
+
     function applyFilterFaction(){
         let list = document.querySelector('.member-list');
         for(var i=0; i < list.childNodes.length; i++){
@@ -275,13 +293,59 @@
     }
 
 
-    function isListOfPlayers(node) {
+    function isHospitalListOfPlayers(node) {
         //console.log('Node',node);
 
         if(node.childNodes.length >= 5){
         return node.childNodes[5].classList !== undefined &&
             node.childNodes[5].classList.contains('user') &&
             node.childNodes[5].classList.contains('name');
+        }
+        else{
+            return false;
+        }
+    }
+
+    function watchForHospitalListUpdates() {
+        let target = document.querySelector('.userlist-wrapper');
+        let doApplyFilter = false;
+        let observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                let doApplyFilter = false;
+                for (let i = 0; i < mutation.addedNodes.length; i++) {
+                    //console.log(mutation.addedNodes.item(i));
+                    if (isHospitalListOfPlayers(mutation.addedNodes.item(i))) {
+                        doApplyFilter = true;
+                        //console.log('Have List of players');
+                        break;
+                    }
+                    else{
+                        //console.log('Not a List of players');
+                        if(mutation.target && mutation.target.nodeType == 1 && mutation.target.classList.contains('confirm-revive')){
+                            break;
+                        }
+                    }
+                }
+
+                if (doApplyFilter) {
+                    applyFilter();
+                }
+            });
+        });
+        // configuration of the observer:
+        //let config = { childList: true, subtree: true };
+        let config = { childList: true, subtree: true };
+        // pass in the target node, as well as the observer options
+        observer.observe(target, config);
+    }
+
+    function isListOfPlayers(node) {
+        //console.log('Node',node);
+
+        if(node.childNodes.length >= 5){
+        return node.childNodes[1].classList !== undefined &&
+            node.childNodes[1].classList.contains('expander') &&
+            node.childNodes[1].classList.contains('clearfix');
         }
         else{
             return false;
@@ -310,7 +374,7 @@
                 }
 
                 if (doApplyFilter) {
-                    applyFilter();
+                    applyProfileListFilter();
                 }
             });
         });

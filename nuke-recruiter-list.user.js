@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Nuklear Applicant
 // @namespace    com.jhvisser.nuke
-// @version      1.1.1
+// @version      1.1.2
 // @description  To flag those who have had recruitment messages sent
 // @author       Altered By Fogest, Originally by Jox [1714547]
 // @match        https://www.torn.com/profiles.php*
@@ -31,7 +31,7 @@
     var update = 1;
 
     var factionWhiteList = [8085, 8954, 9745, 12863, 13851, 17133, 21028];
-    var factionAllyList = [8938, 35840, 9357, 15154, 26437, 8537, 11796, 1149, 8062, 9642, 16312, 19, 33007, 7049, 10610, 22295, 9305, 13307];
+    var factionAllyList = [8938, 35840, 9357, 15154, 26437, 8537, 11796, 1149, 8062, 9642, 16312, 19, 33007, 7049, 10610, 22295, 9305, 13307, 14078, 22781, 30820, 11522, 10818, 9533, 11747, 12094, 16628, 946, 9041, 230, 478];
 
     var blPrfileColor = '#00a1ff3b'; // Recruited players
     var blFactionColor = '#9300d052'; // Ally and Avoided factions

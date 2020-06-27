@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Nuklear Applicant
 // @namespace    com.jhvisser.nuke
-// @version      1.1.0
+// @version      1.1.1
 // @description  To flag those who have had recruitment messages sent
 // @author       Altered By Fogest, Originally by Jox [1714547]
 // @match        https://www.torn.com/profiles.php*
@@ -233,7 +233,7 @@
     }
 
     function reportToNuke(){
-
+        let altName = getCookie('sso_wiki_user');
         if(!PlayerName){
             uid = getCookie('uid');
             data = JSON.parse(sessionStorage.getItem('sidebarData' + uid));
@@ -242,9 +242,15 @@
             }
         }
 
-        const regex = /^(.*?)\s\[/;
-        PlayerName = regex.exec(PlayerName)[1];
-        TargetPlayerName = regex.exec(TargetPlayerName)[1];
+        if (PlayerName) {
+            const regex = /^(.*?)\s\[/;
+            PlayerName = regex.exec(PlayerName)[1];
+            TargetPlayerName = regex.exec(TargetPlayerName)[1];
+        } else if (!PlayerName && altName) {
+            PlayerName = altName;
+        } else {
+            PlayerName = "Unknown [" + uid.toString() + "]";
+        }
 
         if(PlayerName){
             var postData = 'player_id=' + TargetID;

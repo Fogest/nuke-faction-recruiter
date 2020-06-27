@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Nuklear Applicant
 // @namespace    com.jhvisser.nuke
-// @version      1.0.5
+// @version      1.1.0
 // @description  To flag those who have had recruitment messages sent
 // @author       Altered By Fogest, Originally by Jox [1714547]
 // @match        https://www.torn.com/profiles.php*
@@ -31,10 +31,11 @@
     var update = 1;
 
     var factionWhiteList = [8085, 8954, 9745, 12863, 13851, 17133, 21028];
+    var factionAllyList = [8938, 35840, 9357, 15154, 26437, 8537, 11796, 1149, 8062, 9642, 16312, 19, 33007, 7049, 10610, 22295, 9305, 13307];
 
-    var blPrfileColor = '#00a1ff3b';
-    var blFactionColor = 'rgba(150,70,120,0.5)';
-    var wlFactionColor = '#422bff21';
+    var blPrfileColor = '#00a1ff3b'; // Recruited players
+    var blFactionColor = '#9300d052'; // Ally and Avoided factions
+    var wlFactionColor = '#422bff21'; // Nuke Factions
 
     console.log('Nuclear Applicant Loaded');
 
@@ -172,7 +173,7 @@
             console.log(factionWhiteList.includes(fidInt));
 
 
-            if(blackList[id] || factionWhiteList.includes(fidInt)){
+            if(blackList[id] || factionWhiteList.includes(fidInt) || factionAllyList.includes(fidInt)) {
                 var ul = document.createElement('ul');
                 ul.style.padding = '3px 10px';
                 ul.style.margin = '0 5px';
@@ -191,6 +192,15 @@
 
                     let li = document.createElement('li');
                     li.innerHTML = '<span class="bold">In our faction :)</span>'
+
+                    ul.appendChild(li);
+                }
+
+                if(fidInt && factionAllyList.includes(fidInt)) {
+                    userInformationContainer.style.backgroundColor = blFactionColor;
+
+                    let li = document.createElement('li');
+                    li.innerHTML = '<span class="bold">Is an ally or avoided faction :)</span>'
 
                     ul.appendChild(li);
                 }
@@ -284,10 +294,13 @@
                     list.childNodes[i].style.backgroundColor = blPrfileColor;
                     list.childNodes[i].classList.add('nuke-blacklist');
                 }
-
                 if (factionWhiteList.includes(fidInt)) {
                     list.childNodes[i].style.backgroundColor = wlFactionColor;
                     list.childNodes[i].classList.add('nuke-faction-whitelist');
+                }
+                if (factionAllyList.includes(fidInt)) {
+                    list.childNodes[i].style.backgroundColor = blFactionColor;
+                    list.childNodes[i].classList.add('nuke-faction-allylist');
                 }
             }
         }
@@ -312,6 +325,10 @@
                     list.childNodes[i].style.backgroundColor = wlFactionColor;
                     list.childNodes[i].classList.add('nuke-faction-whitelist');
                 }
+                if (factionAllyList.includes(fidInt)) {
+                    list.childNodes[i].style.backgroundColor = blFactionColor;
+                    list.childNodes[i].classList.add('nuke-faction-allylist');
+                }
             }
         }
     }
@@ -335,6 +352,10 @@
                 if (factionWhiteList.includes(fidInt)) {
                     list.childNodes[i].style.backgroundColor = wlFactionColor;
                     list.childNodes[i].classList.add('nuke-faction-whitelist');
+                }
+                if (factionAllyList.includes(fidInt)) {
+                    list.childNodes[i].style.backgroundColor = blFactionColor;
+                    list.childNodes[i].classList.add('nuke-faction-allylist');
                 }
             }
         }

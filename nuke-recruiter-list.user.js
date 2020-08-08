@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Nuklear Applicant
 // @namespace    com.jhvisser.nuke
-// @version      1.1.6
+// @version      1.1.7
 // @description  To flag those who have had recruitment messages sent
 // @author       Altered By Fogest, Originally by Jox [1714547]
 // @match        https://www.torn.com/profiles.php*
@@ -139,11 +139,11 @@
         }
         else{
 
-            var player = document.querySelector('.basic-information .basic-list .user-information-section+div>span').innerHTML;
+            var player = document.querySelector('.basic-information .user-information-section+div>span').innerHTML;
             var id = player.replace(/(.+\[)(\d+)(\])/gm, '$2');
             console.log('checkink is player recruited', id);
 
-            let facLink = document.querySelector(".basic-information .basic-list .user-information-section+div span a[href^='/factions.php']")
+            let facLink = document.querySelector(".basic-information .user-information-section+div span a[href^='/factions.php']")
             fid = facLink ? facLink.href.replace('https://www.torn.com/factions.php?step=profile&ID=', '') : false;
             factionName = facLink ? facLink.text : false;
 

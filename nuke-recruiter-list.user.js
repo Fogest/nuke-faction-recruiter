@@ -30,7 +30,7 @@
     var factionName = null;
     var update = 1;
 
-    var factionWhiteList = [366, 8085, 8954, 9745, 12094, 12863, 13851, 17133, 21028];
+    var factionWhiteList = [366, 8085, 8954, 9745, 12094, 13851, 17133, 21028, 1714547];
 
     /**
      * Can use this snippet of code in the Gitlab Snippets to update this faction HOF ally list quickly.

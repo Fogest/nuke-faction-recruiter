@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Nuklear Applicant
 // @namespace    com.jhvisser.nuke
-// @version      1.1.10
+// @version      1.1.11
 // @description  To flag those who have had recruitment messages sent
 // @author       Altered By Fogest, Originally by Jox [1714547]
 // @match        https://www.torn.com/profiles.php*
@@ -30,7 +30,7 @@
     var factionName = null;
     var update = 1;
 
-    var factionWhiteList = [366, 8085, 8954, 9745, 12094, 13851, 17133, 21028, 1714547];
+    var factionWhiteList = [366, 8085, 8954, 21028, 9745, 12094, 13851, 17133, , 16282];
 
     /**
      * Can use this snippet of code in the Gitlab Snippets to update this faction HOF ally list quickly.

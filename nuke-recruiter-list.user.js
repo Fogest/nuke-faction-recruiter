@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Nuklear Applicant
 // @namespace    com.jhvisser.nuke
-// @version      1.1.12
+// @version      2.0.0
 // @description  To flag those who have had recruitment messages sent
 // @author       Altered By Fogest, Originally by Jox [1714547]
 // @match        https://www.torn.com/profiles.php*
@@ -9,6 +9,10 @@
 // @match        https://www.torn.com/factions.php*
 // @match        https://www.torn.com/page.php*
 // @grant        GM_xmlhttpRequest
+// @grant       GM_getValue
+// @grant       GM_setValue
+// @downloadURL  https://github.com/Fogest/nuke-faction-recruiter/raw/master/nuke-recruiter-list.user.js
+// @updateURL    https://github.com/Fogest/nuke-faction-recruiter/raw/master/nuke-recruiter-list.user.js
 // @connect      nuke.jhvisser.com
 // @connect      nukefamily.org
 // @connect      torn-faction-companies
@@ -16,6 +20,13 @@
 
 (function() {
     'use strict';
+
+    var apiToken = GM_getValue('apiToken', '');
+
+    if (!apiToken) {
+        apiToken = prompt('Please enter your Nuke API key from Fogest\'s site (https://nuke.jhvisser.com/user)');
+        GM_setValue("apiToken", apiToken);
+    }
 
     var apiUrl = 'https://nuke.jhvisser.com/api';
 
@@ -277,7 +288,7 @@
             GM_xmlhttpRequest ( {
                 method:     'POST',
                 url:        apiUrl + '/recruits',
-                headers:    {"Content-Type": "application/x-www-form-urlencoded"},
+                headers:    {"Content-Type": "application/x-www-form-urlencoded", "Authorization": "Bearer " + apiToken},
                 data:       postData,
                 onload:     function (response) {
                     if (response.status === 200) {

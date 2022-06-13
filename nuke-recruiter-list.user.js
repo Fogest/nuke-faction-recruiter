@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Nuklear Applicant
 // @namespace    com.jhvisser.nuke
-// @version      2.0.0
+// @version      2.0.1
 // @description  To flag those who have had recruitment messages sent
 // @author       Altered By Fogest, Originally by Jox [1714547]
 // @match        https://www.torn.com/profiles.php*
@@ -13,9 +13,8 @@
 // @grant       GM_setValue
 // @downloadURL  https://github.com/Fogest/nuke-faction-recruiter/raw/master/nuke-recruiter-list.user.js
 // @updateURL    https://github.com/Fogest/nuke-faction-recruiter/raw/master/nuke-recruiter-list.user.js
-// @connect      nuke.jhvisser.com
+// @connect      nuke.family
 // @connect      nukefamily.org
-// @connect      torn-faction-companies
 // ==/UserScript==
 
 (function() {
@@ -24,11 +23,11 @@
     var apiToken = GM_getValue('apiToken', '');
 
     if (!apiToken) {
-        apiToken = prompt('Please enter your Nuke API key from Fogest\'s site (https://nuke.jhvisser.com/user)');
+        apiToken = prompt('Please enter your Nuke API key from Fogest\'s site (https://nuke.family/user)');
         GM_setValue("apiToken", apiToken);
     }
 
-    var apiUrl = 'https://nuke.jhvisser.com/api';
+    var apiUrl = 'https://nuke.family/api';
 
     var uid = null;
     var fid = null;
